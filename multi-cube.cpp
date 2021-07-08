@@ -7,18 +7,23 @@
 #include <stb_image.h>
 #include <stdio.h>
 
-/*#include <backends/imgui_impl_glfw.h>
-#include <backends/imgui_impl_opengl3.h>
-#include <imgui.h>*/
+#include <imgui/backends/imgui_impl_glfw.h>
+#include <imgui/backends/imgui_impl_opengl3.h>
+#include <imgui/imgui.h>
 
 #include "camera.h"
 #include "config.h"
 #include "gl_env.h"
 #include "shader.h"
 
+// 用于开启GUI
+//#define USE_GUI
+
 float screen_width = 800;
 float screen_height = 600;
+// 用于修改立方体的大小
 float cube_length = 0.3f;
+// 用于修改立方体的间距
 float cube_dist = 0.3f;
 float vertices[] = {
     -cube_length, -cube_length, -cube_length, 0.0f,  0.0f,  -1.0f, 0.0f,  0.0f,
@@ -69,7 +74,7 @@ unsigned int indices[] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
                           24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
 
 // world space positions of our cubes
-float cube_distance = cube_length * 2+cube_dist;
+float cube_distance = cube_length * 2 + cube_dist;
 glm::vec3 cubePositions[] = {
     glm::vec3(0.0f,  0.0f,  0.0f),
     glm::vec3(cube_distance,  0.0f, 0.0f),
@@ -81,15 +86,15 @@ glm::vec3 cubePositions[] = {
     glm::vec3(-cube_distance,  0.0f, -cube_distance),
     glm::vec3(-cube_distance,  0.0f, cube_distance),
 
-    glm::vec3(cube_distance*2,  0.0f, 0.0f),
-    glm::vec3(cube_distance*2,  0.0f, cube_distance),
-    glm::vec3(cube_distance*2,  0.0f, -cube_distance),
-    glm::vec3(-cube_distance*2,  0.0f, 0.0f),
-    glm::vec3(-cube_distance*2,  0.0f, cube_distance),
-    glm::vec3(-cube_distance*2,  0.0f, -cube_distance),
-    glm::vec3(0.0f,  0.0f, cube_distance*2),
-    glm::vec3(cube_distance,  0.0f, cube_distance*2),
-    glm::vec3(-cube_distance,  0.0f, cube_distance*2),
+    glm::vec3(cube_distance * 2,  0.0f, 0.0f),
+    glm::vec3(cube_distance * 2,  0.0f, cube_distance),
+    glm::vec3(cube_distance * 2,  0.0f, -cube_distance),
+    glm::vec3(-cube_distance * 2,  0.0f, 0.0f),
+    glm::vec3(-cube_distance * 2,  0.0f, cube_distance),
+    glm::vec3(-cube_distance * 2,  0.0f, -cube_distance),
+    glm::vec3(0.0f,  0.0f, cube_distance * 2),
+    glm::vec3(cube_distance,  0.0f, cube_distance * 2),
+    glm::vec3(-cube_distance,  0.0f, cube_distance * 2),
     glm::vec3(0.0f,  0.0f, -cube_distance * 2),
     glm::vec3(cube_distance,  0.0f, -cube_distance * 2),
     glm::vec3(-cube_distance,  0.0f, -cube_distance * 2),
@@ -106,7 +111,7 @@ bool first_mouse = true;
 
 float delta_time = 0.0f, last_frame = 0.0f;
 
-float light_location[] = { 1.0f, 1.0f, 1.0f };
+float light_location[] = { 1.0f, 1.5f, 1.0f };
 float light_color[] = { 1.0f, 1.0f, 1.0f };
 float strength[] = { 0.2f, 2.0f, 1.0f, 16.0f };
 
@@ -185,12 +190,14 @@ int main() {
         return -1;
     }
 
-    /*IMGUI_CHECKVERSION();
+#ifdef USE_GUI
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-    ImGui::StyleColorsDark();*/
+    ImGui::StyleColorsDark();
+#endif
 
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
@@ -207,7 +214,6 @@ int main() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
         GL_STATIC_DRAW);
 
-    //三个属性：顶点、法向量、XXX
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
@@ -217,9 +223,8 @@ int main() {
         (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
-    Shader shader_program(DATA_DIR "/shader.vert", DATA_DIR "/shader.frag");
-    Shader shader_light_program(DATA_DIR "/shader.vert",
-        DATA_DIR "/shader_light.frag");
+    Shader shader_program( "shader.vert",  "shader.frag");
+    Shader shader_light_program("shader.vert","shader_light.frag");
 
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
@@ -235,7 +240,7 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // 加载并生成纹理
-    data = stbi_load(DATA_DIR "/色彩纹理图.bmp", &width, &height, &nrChannels, 0);
+    data = stbi_load("色彩纹理图.bmp", &width, &height, &nrChannels, 0);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
             GL_UNSIGNED_BYTE, data);
@@ -256,7 +261,28 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // 加载并生成纹理
-    data = stbi_load(DATA_DIR "/法向图.bmp", &width, &height, &nrChannels, 0);
+    data = stbi_load("法向图.bmp", &width, &height, &nrChannels, 0);
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
+            GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else {
+        std::cout << "Failed to load texture2" << std::endl;
+    }
+    stbi_image_free(data);
+
+    unsigned int texture3;
+    glGenTextures(1, &texture3);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, texture3);
+    // 为当前绑定的纹理对象设置环绕、过滤方式
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // 加载并生成纹理
+    data = stbi_load("背景图.bmp", &width, &height, &nrChannels, 0);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
             GL_UNSIGNED_BYTE, data);
@@ -283,10 +309,12 @@ int main() {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         processInput(window);
-        
-        /*ImGui_ImplOpenGL3_NewFrame();
+
+#ifdef USE_GUI
+        ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();*/
+        ImGui::NewFrame();
+#endif
 
         shader_program.use();
         shader_program.setInt("texture_color", 0);
@@ -300,7 +328,7 @@ int main() {
             strength[3]);
         view = camera.GetViewMatrix();
         shader_program.setMat4("view", view);
-        projection = glm::perspective(glm::radians(camera.Zoom),
+        projection = glm::perspective(glm::radians(camera.Zoom), 
             screen_width / screen_height, 0.1f, 100.0f);
         shader_program.setMat4("projection", projection);
 
@@ -342,7 +370,7 @@ int main() {
                 shader_program.setVec3("tangent", tangent);
                 shader_program.setVec3("bitangent", bitangent);
                 //printf("%lf%lf%lfxxx%lf%lf%lf\n", tangent.x, tangent.y, tangent.z, bitangent.x, bitangent.y, bitangent.z);
-            
+
                 glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
                 model = glm::translate(model, cubePositions[j]);
                 shader_program.setMat4("model", model);
@@ -351,7 +379,53 @@ int main() {
                     (const void*)(6 * i * sizeof(float)));
             }
         }
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture3);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture3);
+        glBindVertexArray(VAO);
+        for (int i = 0; i < 12; ++i) {//六个面
+            glm::vec3 tangent, bitangent;
+            int bias = 6 * 8 * i;
+            glm::vec3 pos1(vertices[0 * 8 + 0 + bias], vertices[0 * 8 + 1 + bias],
+                vertices[0 * 8 + 2 + bias]);
+            glm::vec3 pos2(vertices[1 * 8 + 0 + bias], vertices[1 * 8 + 1 + bias],
+                vertices[1 * 8 + 2 + bias]);
+            glm::vec3 pos3(vertices[2 * 8 + 0 + bias], vertices[2 * 8 + 1 + bias],
+                vertices[2 * 8 + 2 + bias]);
+            //printf("%lf%lf%lf\n", pos1.x, pos1.y, pos1.z);
+            glm::vec2 uv1(vertices[0 * 8 + 6 + bias], vertices[0 * 8 + 7 + bias]);
+            glm::vec2 uv2(vertices[1 * 8 + 6 + bias], vertices[1 * 8 + 7 + bias]);
+            glm::vec2 uv3(vertices[2 * 8 + 6 + bias], vertices[2 * 8 + 7 + bias]);
+
+            glm::vec3 edge1 = pos2 - pos1;
+            glm::vec3 edge2 = pos3 - pos1;
+            glm::vec2 delta_uv1 = uv2 - uv1;
+            glm::vec2 delta_uv2 = uv3 - uv1;
+            float f = 1.0f / (delta_uv1.x * delta_uv2.y - delta_uv2.x * delta_uv1.y);
+            tangent.x = f * (delta_uv2.y * edge1.x - delta_uv1.y * edge2.x);
+            tangent.y = f * (delta_uv2.y * edge1.y - delta_uv1.y * edge2.y);
+            tangent.z = f * (delta_uv2.y * edge1.z - delta_uv1.y * edge2.z);
+            tangent = glm::normalize(tangent);
+            bitangent.x = f * (-delta_uv2.x * edge1.x + delta_uv1.x * edge2.x);
+            bitangent.y = f * (-delta_uv2.x * edge1.y + delta_uv1.x * edge2.y);
+            bitangent.z = f * (-delta_uv2.x * edge1.z + delta_uv1.x * edge2.z);
+            bitangent = glm::normalize(bitangent);
+            shader_program.setVec3("tangent", tangent);
+            shader_program.setVec3("bitangent", bitangent);
+
+
+            glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+            model = glm::scale(model, glm::vec3(7.5f, 7.5f, 7.5f));
+            shader_program.setMat4("model", model);
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT,
+                (const void*)(6 * i * sizeof(float)));
+        }
         glBindVertexArray(0);
+
+
 
         shader_light_program.use();
         shader_light_program.setVec3("LightColor", light_color[0], light_color[1],
@@ -372,22 +446,26 @@ int main() {
         glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-        /*ImGui::Begin("Parameters");
+#ifdef USE_GUI
+        ImGui::Begin("Parameters");
         ImGui::ColorEdit3("Light Color", light_color);
         ImGui::SliderFloat3("Light Position", light_location, -1.0f, 1.0f);
         ImGui::SliderFloat3("Strength", strength, 0.0f, 5.0f);
         ImGui::SliderFloat("Shiniess", &strength[3], 0.0f, 128.0f);
         ImGui::End();
         ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
-    /*ImGui_ImplOpenGL3_Shutdown();
+
+#ifdef USE_GUI
+    ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();*/
+    ImGui::DestroyContext();
+#endif
 
     glfwTerminate();
     return 0;
