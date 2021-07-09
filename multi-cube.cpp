@@ -69,6 +69,50 @@ float vertices[] = {
     -cube_length, cube_length,  -cube_length, 0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 
 };
+float vertices_room[] = {
+    -cube_length, -cube_length, -cube_length, 0.0f,  0.0f,  1.0f, 0.0f,  0.0f,
+    cube_length,  -cube_length, -cube_length, 0.0f,  0.0f,  1.0f, 1.0f,  0.0f,
+    cube_length,  cube_length,  -cube_length, 0.0f,  0.0f,  1.0f, 1.0f,  1.0f,
+    cube_length,  cube_length,  -cube_length, 0.0f,  0.0f,  1.0f, 1.0f,  1.0f,
+    -cube_length, cube_length,  -cube_length, 0.0f,  0.0f,  1.0f, 0.0f,  1.0f,
+    -cube_length, -cube_length, -cube_length, 0.0f,  0.0f,  1.0f, 0.0f,  0.0f,
+
+    -cube_length, -cube_length, cube_length,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,
+    cube_length,  -cube_length, cube_length,  0.0f,  0.0f,  -1.0f,  1.0f,  0.0f,
+    cube_length,  cube_length,  cube_length,  0.0f,  0.0f,  -1.0f,  1.0f,  1.0f,
+    cube_length,  cube_length,  cube_length,  0.0f,  0.0f,  -1.0f,  1.0f,  1.0f,
+    -cube_length, cube_length,  cube_length,  0.0f,  0.0f,  -1.0f,  0.0f,  1.0f,
+    -cube_length, -cube_length, cube_length,  0.0f,  0.0f,  -1.0f,  0.0f,  0.0f,
+
+    -cube_length, cube_length,  cube_length,  1.0f, 0.0f,  0.0f,  1.0f,  0.0f,
+    -cube_length, cube_length,  -cube_length, 1.0f, 0.0f,  0.0f,  1.0f,  1.0f,
+    -cube_length, -cube_length, -cube_length, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f,
+    -cube_length, -cube_length, -cube_length, 1.0f, 0.0f,  0.0f,  0.0f,  1.0f,
+    -cube_length, -cube_length, cube_length,  1.0f, 0.0f,  0.0f,  0.0f,  0.0f,
+    -cube_length, cube_length,  cube_length,  1.0f, 0.0f,  0.0f,  1.0f,  0.0f,
+
+    cube_length,  cube_length,  cube_length,  -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+    cube_length,  cube_length,  -cube_length, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
+    cube_length,  -cube_length, -cube_length, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+    cube_length,  -cube_length, -cube_length, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
+    cube_length,  -cube_length, cube_length,  -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
+    cube_length,  cube_length,  cube_length,  -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
+
+    -cube_length, -cube_length, -cube_length, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f,
+    cube_length,  -cube_length, -cube_length, 0.0f,  1.0f, 0.0f,  1.0f,  1.0f,
+    cube_length,  -cube_length, cube_length,  0.0f,  1.0f, 0.0f,  1.0f,  0.0f,
+    cube_length,  -cube_length, cube_length,  0.0f,  1.0f, 0.0f,  1.0f,  0.0f,
+    -cube_length, -cube_length, cube_length,  0.0f,  1.0f, 0.0f,  0.0f,  0.0f,
+    -cube_length, -cube_length, -cube_length, 0.0f,  1.0f, 0.0f,  0.0f,  1.0f,
+
+    -cube_length, cube_length,  -cube_length, 0.0f,  -1.0f,  0.0f,  0.0f,  1.0f,
+    cube_length,  cube_length,  -cube_length, 0.0f,  -1.0f,  0.0f,  1.0f,  1.0f,
+    cube_length,  cube_length,  cube_length,  0.0f,  -1.0f,  0.0f,  1.0f,  0.0f,
+    cube_length,  cube_length,  cube_length,  0.0f,  -1.0f,  0.0f,  1.0f,  0.0f,
+    -cube_length, cube_length,  cube_length,  0.0f,  -1.0f,  0.0f,  0.0f,  0.0f,
+    -cube_length, cube_length,  -cube_length, 0.0f,  -1.0f,  0.0f,  0.0f,  1.0f
+
+};
 unsigned int indices[] = { 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
                           12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
                           24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 };
@@ -111,7 +155,7 @@ bool first_mouse = true;
 
 float delta_time = 0.0f, last_frame = 0.0f;
 
-float light_location[] = { 1.0f, 1.5f, 1.0f };
+float light_location[] = { 1.0f, 1.6f, 1.0f };
 float light_color[] = { 1.0f, 1.0f, 1.0f };
 float strength[] = { 0.2f, 2.0f, 1.0f, 16.0f };
 
@@ -223,8 +267,23 @@ int main() {
         (void*)(6 * sizeof(float)));
     glEnableVertexAttribArray(2);
 
+    // 绑定房间的VBO
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_room), vertices_room, GL_STATIC_DRAW);
+    
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+        (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(5, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+        (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(5);
+
     Shader shader_program( "shader.vert",  "shader.frag");
     Shader shader_light_program("shader.vert","shader_light.frag");
+    Shader shader_room_program("shader_room.vert", "shader.frag");
 
     stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
@@ -272,26 +331,6 @@ int main() {
     }
     stbi_image_free(data);
 
-    unsigned int texture3;
-    glGenTextures(1, &texture3);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texture3);
-    // 为当前绑定的纹理对象设置环绕、过滤方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // 加载并生成纹理
-    data = stbi_load("背景图.bmp", &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-            GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else {
-        std::cout << "Failed to load texture2" << std::endl;
-    }
-    stbi_image_free(data);
 
     glm::mat4 model;
     glm::mat4 view;
@@ -331,6 +370,7 @@ int main() {
         projection = glm::perspective(glm::radians(camera.Zoom), 
             screen_width / screen_height, 0.1f, 100.0f);
         shader_program.setMat4("projection", projection);
+
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -380,10 +420,26 @@ int main() {
             }
         }
 
+        shader_room_program.use();
+        shader_room_program.setInt("texture_color", 0);
+        shader_room_program.setInt("texture_normal", 1);
+        shader_room_program.setVec3("LightColor", light_color[0], light_color[1],
+            light_color[2]);
+        shader_room_program.setVec3("LightLocation", light_location[0],
+            light_location[1], light_location[2]);
+        shader_room_program.setVec3("ViewLocation", camera.Position);
+        shader_room_program.setVec4("Strength", strength[0], strength[1], strength[2],
+            strength[3]);
+        view = camera.GetViewMatrix();
+        shader_room_program.setMat4("view", view);
+        projection = glm::perspective(glm::radians(camera.Zoom),
+            screen_width / screen_height, 0.1f, 100.0f);
+        shader_room_program.setMat4("projection", projection);
+
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture3);
+        glBindTexture(GL_TEXTURE_2D, texture1);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture3);
+        glBindTexture(GL_TEXTURE_2D, texture2);
         glBindVertexArray(VAO);
         for (int i = 0; i < 12; ++i) {//六个面
             glm::vec3 tangent, bitangent;
@@ -412,13 +468,13 @@ int main() {
             bitangent.y = f * (-delta_uv2.x * edge1.y + delta_uv1.x * edge2.y);
             bitangent.z = f * (-delta_uv2.x * edge1.z + delta_uv1.x * edge2.z);
             bitangent = glm::normalize(bitangent);
-            shader_program.setVec3("tangent", tangent);
-            shader_program.setVec3("bitangent", bitangent);
+            shader_room_program.setVec3("tangent", tangent);
+            shader_room_program.setVec3("bitangent", bitangent);
 
 
-            glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+            glm::mat4 model = glm::mat4(1.0f);
             model = glm::scale(model, glm::vec3(7.5f, 7.5f, 7.5f));
-            shader_program.setMat4("model", model);
+            shader_room_program.setMat4("model", model);
 
             glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT,
                 (const void*)(6 * i * sizeof(float)));
